@@ -1,4 +1,4 @@
-OKD: The Community Distribution of Kubernetes that powers Red Hat's OpenShift
+OKD: The Community Distribution of Kubernetes that powers Red Hat's OpenShift.
 =============================================================================
 
 <img src="./img/okd-panda-flat_rocketeer_with_number.svg" height="200">
