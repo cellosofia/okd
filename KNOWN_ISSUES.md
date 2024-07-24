@@ -1,32 +1,15 @@
 # Frequent issues in latest releases
 
-## [Single-node Cluster Installations Fails on AWS (IPI)](https://github.com/openshift/okd/issues/862)
-
-  **Effected Versions:** 4.7
-
-  **Description:** Attempting to deploy a single-node cluster to AWS with Installer Provisioned Infrastructure (IPI) fails.
-
-  **Workaround:** None at this time. OKD 4.8 is known to work
-
-## CannotRetrieveUpdates alert
-
-  **Effected Versions:** All versions before 4.7.0-0.okd-2021-09-19-013247 or 4.8.0-0.okd-2021-10-01-221835
-
-  **Description:** Installed clusters throw `CannotRetrieveUpdates` alert, origin-release.svc.ci.openshift.org is unreachable.
-  This domain was deprecated during CI Infra cleanup. Unfortunately we didn't rollout the fix to change this URL in OKD.
-
-  **Workaround:** `oc patch clusterversion/version --patch '{"spec":{"upstream":"https://amd64.origin.releases.ci.openshift.org/graph"}}' --type=merge`
-
 ## [Some optional operators from OCP are not available in OKD](https://github.com/openshift/okd/issues/456)
-  **Effected Versions:** All
+  **Affected Versions:** All
+   Please see [this explanation of Operator availability on OKD](https://www.okd.io/okd_tech_docs/operators/). An OKD-specific catalog with community versions of mentioned operators is in progress.
 
-  **Description:** OCP users can install Logging/Serverless/GPU and other operators from Red Hat OperatorHub. This requires redhat.io pull secret, which may not be available for OKD users.
+## [CephFS mounts get invalid permissions](https://github.com/openshift/okd/issues/1160)
+  **Effected Versions:** 4.10.0-0.okd-2022-03-07-131213
+  **Description:** Due to kernel 4.16 bug CephFS mounts get invalid permissions, so writing to image registry backed by CephFS fails on OKD 4.10
+  **Workaround**: In `ceph-csi-cephfs` installation add `wsync` to `kernelMountOptions`
 
-  **Workaround:** Start installation with a pull secret from cloud.redhat.com, enable new source in operatorhub settings.
-
-  OKD-specific catalog with community versions of mentioned operators is in progress.
-
-## [Unable to mirror images OKD 4.8.0-0.okd-2021-10-01-221835](https://github.com/openshift/okd/discussions/904)
-  **Effected Versions:** 4.8.0-0.okd-2021-10-01-221835
-  **Description:**  Attempts to mirror 4.8 content on the CI registry fails. This blocks air-gapped installs on restricted networks. After https://github.com/openshift/okd/issues/402 was resolved some 4.8 images have not been rebuilt. The fix should be available in 4.8 nightlies.
-  **Workaround**: None available at this time.
+## [Ceph service performance degradation](https://github.com/okd-project/okd/issues/1505)
+  **Effected Versions:** 4.11.0-0.okd-2023-01-14-152430, 4.12.0-0.okd-2023-02-04-212953
+  **Description:** Due to kernel 6.0 bug with bind(), the Ceph service faces radical performance degradation, causing PG unavailability, very slow I/O operations.
+  **Workaround**: Either build a custom [FCOS image using layering](https://docs.okd.io/4.12/post_installation_configuration/coreos-layering.html) or update to a newer version.
